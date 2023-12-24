@@ -8,7 +8,9 @@ import (
 	"io"
 	"sync"
 
+	"github.com/MilkeeyCat/conversa/internal/database"
 	"github.com/MilkeeyCat/conversa/views/components"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/net/websocket"
 )
@@ -75,12 +77,17 @@ func WebsocketsHander(c echo.Context) error {
 
 			fmt.Println(data)
 
-			name, err := c.Cookie("user")
+			claims := c.Get("user").(*jwt.Token).Claims.(*JwtCustomClaims)
+			user, err := database.FindUserById(claims.Id)
+			if err != nil {
+				// lets hope ill never happen
+			}
+
 			if err != nil {
 				c.Logger().Error(err)
 			}
 
-			err = sendToAll(name.Value, data.Message)
+			err = sendToAll(user.Name, data.Message)
 			if err != nil {
 				c.Logger().Error(err)
 			}

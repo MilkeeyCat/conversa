@@ -27,10 +27,25 @@ func CreateUser(name, password string) error {
 	return nil
 }
 
-func FindUser(name string) (User, error) {
-    //TODO: refactor Scan :justatest:
+func FindUserByName(name string) (User, error) {
+	//TODO: refactor Scan :justatest:
 	var user User
 	err := Db.QueryRow("SELECT * FROM users WHERE name = ?", name).Scan(&user.Id, &user.Name, &user.Password)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return user, &UserNotFound{}
+		}
+
+		return user, err
+	}
+
+	return user, nil
+}
+
+func FindUserById(id int) (User, error) {
+	//TODO: refactor Scan :justatest:
+	var user User
+	err := Db.QueryRow("SELECT * FROM users WHERE id = ?", id).Scan(&user.Id, &user.Name, &user.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return user, &UserNotFound{}

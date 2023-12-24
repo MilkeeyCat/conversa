@@ -39,7 +39,7 @@ func RegisterPOST(c echo.Context) error {
 		return c.NoContent(http.StatusBadRequest)
 	}
 
-	user, err := database.FindUser(name)
+	user, err := database.FindUserByName(name)
 	if err != nil {
 		_, ok := err.(*database.UserNotFound)
 		if !ok {
@@ -74,7 +74,7 @@ func LoginPOST(c echo.Context) error {
 		return c.NoContent(http.StatusBadRequest)
 	}
 
-	user, err := database.FindUser(name)
+	user, err := database.FindUserByName(name)
 	if err != nil {
 		c.Logger().Error(err)
 		return err
