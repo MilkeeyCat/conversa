@@ -1,0 +1,17 @@
+package pages
+
+import "github.com/MilkeeyCat/conversa/views/layouts"
+
+templ Login() {
+	@layouts.Base() {
+		<form method="POST">
+			<label for="name">Name:</label>
+			<input name="name"/>
+			<br/>
+			<label for="password">Password:</label>
+			<input name="password"/>
+			<br/>
+			<button type="submit">Login</button>
+		</form>
+	}
+}

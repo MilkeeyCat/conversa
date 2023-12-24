@@ -1,3 +1,3 @@
 run:
 	~/go/bin/templ generate
-	go run cmd/main.go
+	go build -o ./tmp/main cmd/main.go
