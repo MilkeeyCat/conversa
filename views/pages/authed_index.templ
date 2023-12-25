@@ -1,13 +1,19 @@
 package pages
 
 import "github.com/MilkeeyCat/conversa/views/layouts"
+import "github.com/MilkeeyCat/conversa/internal/database"
+import "github.com/MilkeeyCat/conversa/views/components"
 
-templ Authed() {
+templ Authed(messages []database.MessageWithUser, userId int) {
 	@layouts.Base() {
 		<div class="flex">
 			<div class="bg-[red] w-1/5">It will be like a list of rooms, ya konw</div>
 			<div class="bg-[blue] w-4/5">
-				<div id="messages"></div>
+				<div id="messages">
+					for _, msg := range messages {
+						@components.Message(msg.Username, msg.Message, msg.UserId == userId)
+					}
+				</div>
 				<form
 					hx-ext="ws"
 					ws-connect="/ws"
