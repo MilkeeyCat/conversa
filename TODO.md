@@ -1,0 +1,2 @@
+- [ ] add ts suport so i have no longer deal with js
+- [ ] make it look somewhat good

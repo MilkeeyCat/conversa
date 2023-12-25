@@ -6,5 +6,11 @@ import (
 )
 
 func Index(c echo.Context) error {
-	return render(c, pages.Index(c.Get("user") != nil))
+	isAuthed := c.Get("user") != nil
+
+	if isAuthed {
+		return render(c, pages.Authed())
+	}
+
+	return render(c, pages.Guest())
 }

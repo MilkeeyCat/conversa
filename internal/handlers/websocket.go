@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"sync"
 
@@ -17,21 +16,23 @@ import (
 
 type ConnectionPool struct {
 	sync.RWMutex
-	connections map[*websocket.Conn]struct{}
+	connections map[*websocket.Conn]struct {
+		Id int
+	}
 }
 
 var connectionPool ConnectionPool = ConnectionPool{
-	connections: make(map[*websocket.Conn]struct{}),
+	connections: make(map[*websocket.Conn]struct{ Id int }),
 }
 
-func sendToAll(author, msg string) error {
+func sendToAll(author, msg string, authorId int) error {
 	connectionPool.RLock()
 	defer connectionPool.RUnlock()
 
-	for connection := range connectionPool.connections {
+	for connection, data := range connectionPool.connections {
 		var buf bytes.Buffer
 		ctx := context.TODO()
-		components.Message(author, msg).Render(ctx, &buf)
+		components.Message(author, msg, data.Id == authorId).Render(ctx, &buf)
 
 		if err := websocket.Message.Send(connection, buf.String()); err != nil {
 			return err
@@ -51,7 +52,9 @@ func WebsocketsHander(c echo.Context) error {
 		}(ws)
 
 		connectionPool.Lock()
-		connectionPool.connections[ws] = struct{}{}
+		connectionPool.connections[ws] = struct{ Id int }{
+			Id: c.Get("user").(*jwt.Token).Claims.(*JwtCustomClaims).Id,
+		}
 		connectionPool.Unlock()
 
 		for {
@@ -68,19 +71,16 @@ func WebsocketsHander(c echo.Context) error {
 			}
 
 			var data WsRequest
-			fmt.Println(string(msg))
 
 			err = json.Unmarshal(msg, &data)
 			if err != nil {
 				c.Logger().Error(err)
 			}
 
-			fmt.Println(data)
-
 			claims := c.Get("user").(*jwt.Token).Claims.(*JwtCustomClaims)
 			user, err := database.FindUserById(claims.Id)
 			if err != nil {
-				// lets hope ill never happen
+				c.Logger().Error(err)
 			}
 
 			if err != nil {
@@ -92,7 +92,7 @@ func WebsocketsHander(c echo.Context) error {
 				c.Logger().Error(err)
 			}
 
-			err = sendToAll(user.Name, data.Message)
+			err = sendToAll(user.Name, data.Message, claims.Id)
 			if err != nil {
 				c.Logger().Error(err)
 			}

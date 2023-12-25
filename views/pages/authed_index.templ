@@ -1,0 +1,21 @@
+package pages
+
+import "github.com/MilkeeyCat/conversa/views/layouts"
+
+templ Authed() {
+	@layouts.Base() {
+		<div class="flex">
+			<div class="bg-[red] w-1/5">It will be like a list of rooms, ya konw</div>
+			<div class="bg-[blue] w-4/5">
+				<div id="messages"></div>
+				<form
+					hx-ext="ws"
+					ws-connect="/ws"
+					ws-send
+				>
+					<input name="message"/>
+				</form>
+			</div>
+		</div>
+	}
+}
