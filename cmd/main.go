@@ -64,19 +64,6 @@ func main() {
 			},
 		},
 	}))
-	app.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			_, err := c.Cookie("user")
-
-			if err != nil {
-				c.Set("authed", false)
-			} else {
-				c.Set("authed", true)
-			}
-
-			return next(c)
-		}
-	})
 
 	port := os.Getenv("PORT")
 	if port == "" {
