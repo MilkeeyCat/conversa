@@ -6,10 +6,10 @@ import (
 )
 
 type User struct {
-	Id       string `json:"id"`
-	Name     string `json:"name"`
-	Password string `json:"password"`
-	//CreatedAt string
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	Password  string `json:"password"`
+	CreatedAt string `json:"created_at"`
 }
 
 type UserNotFound struct{}
@@ -30,7 +30,7 @@ func CreateUser(name, password string) error {
 func FindUserByName(name string) (User, error) {
 	//TODO: refactor Scan :justatest:
 	var user User
-	err := Db.QueryRow("SELECT * FROM users WHERE name = ?", name).Scan(&user.Id, &user.Name, &user.Password)
+	err := Db.QueryRow("SELECT * FROM users WHERE name = ?", name).Scan(&user.Id, &user.Name, &user.Password, &user.CreatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return user, &UserNotFound{}
@@ -45,7 +45,7 @@ func FindUserByName(name string) (User, error) {
 func FindUserById(id int) (User, error) {
 	//TODO: refactor Scan :justatest:
 	var user User
-	err := Db.QueryRow("SELECT * FROM users WHERE id = ?", id).Scan(&user.Id, &user.Name, &user.Password)
+	err := Db.QueryRow("SELECT * FROM users WHERE id = ?", id).Scan(&user.Id, &user.Name, &user.Password, &user.CreatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return user, &UserNotFound{}

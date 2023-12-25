@@ -87,6 +87,11 @@ func WebsocketsHander(c echo.Context) error {
 				c.Logger().Error(err)
 			}
 
+			err = database.CreateMessage(claims.Id, data.Message, -1)
+			if err != nil {
+				c.Logger().Error(err)
+			}
+
 			err = sendToAll(user.Name, data.Message)
 			if err != nil {
 				c.Logger().Error(err)
