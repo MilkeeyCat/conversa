@@ -9,7 +9,18 @@ import (
 templ Authed(messages []database.MessageWithUser, userId int) {
 	@layouts.Base() {
 		<div class="flex h-full">
-			<div class="bg-[red] w-1/5">It will be like a list of rooms, ya konw</div>
+			<div class="bg-[red] w-1/5">
+				<form
+					id="createRoomForm"
+					class="hidden"
+					hx-post="/rooms"
+				>
+					<input name="name" placeholder="Room name"/>
+					<button class="bg-[orange]" type="submit">Create</button>
+					<button class="bg-[green]" type="button" hx-on:click="sidebar.toggleCreateRoomForm()">Cancel</button>
+				</form>
+				<button class="bg-[orange]" id="createRoomButton" hx-on:click="sidebar.toggleCreateRoomForm()">Create a new room</button>
+			</div>
 			<div class="bg-[blue] w-full lg:w-2/5 mx-auto flex flex-col min-h-full">
 				<div id="messages" class="overflow-y-auto">
 					for _, msg := range messages {
@@ -18,9 +29,8 @@ templ Authed(messages []database.MessageWithUser, userId int) {
 				</div>
 				<form
 					hx-ext="ws"
-                    hx-on::ws-after-message="scrollDown(event)"
+					hx-on::ws-after-message="messages.scrollToLastMessage()"
 					ws-connect="/ws"
-                    hx-target="#messages"
 					ws-send
 					class="p-10 bg-[green]"
 				>

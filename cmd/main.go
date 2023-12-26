@@ -35,6 +35,8 @@ func main() {
 	app.POST("/login", handler.LoginPOST)
 	app.GET("/register", handler.Register)
 	app.POST("/register", handler.RegisterPOST)
+	//TODO: add authed middleware here
+	app.POST("/rooms", handler.CreateRoom)
 	app.GET("/ws", handler.WebsocketsHander)
 
 	secret := os.Getenv("SECRET")
