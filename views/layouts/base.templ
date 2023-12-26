@@ -22,9 +22,20 @@ templ Base() {
                     }
                 }
             </script>
+			<style>
+                body, html {
+                    height: 100%;
+                }
+            </style>
 		</head>
 		<body hx-boost="true">
 			{ children... }
+			<script>
+                function scrollDown(detail) {
+                    const div = document.querySelector("#messages")
+                    div.scrollTop = div.scrollHeight;
+                }
+            </script>
 		</body>
 	</html>
 }

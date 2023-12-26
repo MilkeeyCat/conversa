@@ -1,25 +1,30 @@
 package pages
 
-import "github.com/MilkeeyCat/conversa/views/layouts"
-import "github.com/MilkeeyCat/conversa/internal/database"
-import "github.com/MilkeeyCat/conversa/views/components"
+import (
+	"github.com/MilkeeyCat/conversa/views/layouts"
+	"github.com/MilkeeyCat/conversa/internal/database"
+	"github.com/MilkeeyCat/conversa/views/components"
+)
 
 templ Authed(messages []database.MessageWithUser, userId int) {
 	@layouts.Base() {
-		<div class="flex">
+		<div class="flex h-full">
 			<div class="bg-[red] w-1/5">It will be like a list of rooms, ya konw</div>
-			<div class="bg-[blue] w-4/5">
-				<div id="messages">
+			<div class="bg-[blue] w-full lg:w-2/5 mx-auto flex flex-col min-h-full">
+				<div id="messages" class="overflow-y-auto">
 					for _, msg := range messages {
 						@components.Message(msg.Username, msg.Message, msg.UserId == userId)
 					}
 				</div>
 				<form
 					hx-ext="ws"
+                    hx-on::ws-after-message="scrollDown(event)"
 					ws-connect="/ws"
+                    hx-target="#messages"
 					ws-send
+					class="p-10 bg-[green]"
 				>
-					<input name="message"/>
+					<input id="input" name="message" class="w-full bg-primary-1/50"/>
 				</form>
 			</div>
 		</div>

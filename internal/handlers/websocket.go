@@ -32,7 +32,7 @@ func sendToAll(author, msg string, authorId int) error {
 	for connection, data := range connectionPool.connections {
 		var buf bytes.Buffer
 		ctx := context.TODO()
-		components.Message(author, msg, data.Id == authorId).Render(ctx, &buf)
+		components.SwappingMessage(author, msg, data.Id == authorId).Render(ctx, &buf)
 
 		if err := websocket.Message.Send(connection, buf.String()); err != nil {
 			return err

@@ -9,8 +9,17 @@ func avatarClasses(ownMsg bool) string {
 	return classes
 }
 
+func messageClasses(ownMsg bool) string {
+	classes := "flex mt-4 w-2/3"
+	if ownMsg {
+		classes += " ml-auto justify-end"
+	}
+
+	return classes
+}
+
 func messageContainerClasses(ownMsg bool) string {
-	classes := "bg-primary-1 w-1/3 rounded-[10px] p-2"
+	classes := "bg-primary-1 rounded-[10px] p-2"
 	if ownMsg {
 		classes += " rounded-br-none"
 	} else {
@@ -20,17 +29,21 @@ func messageContainerClasses(ownMsg bool) string {
 	return classes
 }
 
-templ Message(author, msg string, ownMsg bool) {
+templ SwappingMessage(author, msg string, ownMsg bool) {
 	<div id="messages" hx-swap-oob="beforeend">
-		<div class="flex mt-4">
-			<img
-				class={ avatarClasses(ownMsg) }
-				src="https://www.streamscheme.com/wp-content/uploads/2020/04/pepega.png"
-			/>
-			<div class={ messageContainerClasses(ownMsg) }>
-				<p class="text-[red]">{ author }</p>
-				<p>{ msg }</p>
-			</div>
+		@Message(author, msg, ownMsg)
+	</div>
+}
+
+templ Message(author, msg string, ownMsg bool) {
+	<div class={ messageClasses(ownMsg) }>
+		<img
+			class={ avatarClasses(ownMsg) }
+			src="https://www.streamscheme.com/wp-content/uploads/2020/04/pepega.png"
+		/>
+		<div class={ messageContainerClasses(ownMsg) }>
+			<p class="text-[red]">{ author }</p>
+			<p>{ msg }</p>
 		</div>
 	</div>
 }
