@@ -27,6 +27,9 @@ func main() {
 
 	app := echo.New()
 
+	app.Use(middleware.Logger())
+	app.Static("/dist", "dist")
+
 	app.GET("/", handler.Index)
 	app.GET("/login", handler.Login)
 	app.POST("/login", handler.LoginPOST)

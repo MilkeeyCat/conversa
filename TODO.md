@@ -1,2 +1,3 @@
 - [ ] add ts suport so i have no longer deal with js
 - [ ] make it look somewhat good
+- [ ] load only ~20 messages and lazy load others instead of loading bajillion messages

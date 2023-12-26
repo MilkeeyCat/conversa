@@ -11,6 +11,7 @@ templ Base() {
 			<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
 			<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
 			<script src="https://cdn.tailwindcss.com"></script>
+			<script src="/dist/bundle.js"></script>
 			<script>
                 tailwind.config = {
                     theme: {
@@ -30,12 +31,6 @@ templ Base() {
 		</head>
 		<body hx-boost="true">
 			{ children... }
-			<script>
-                function scrollDown(detail) {
-                    const div = document.querySelector("#messages")
-                    div.scrollTop = div.scrollHeight;
-                }
-            </script>
 		</body>
 	</html>
 }
