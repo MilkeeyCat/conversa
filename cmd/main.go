@@ -17,7 +17,7 @@ import (
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		fmt.Printf("couldn't parse variabled from .env file: %s", err)
+		fmt.Printf("couldn't parse variables from .env file: %s", err)
 	}
 
 	err = database.InitDB()
@@ -37,6 +37,9 @@ func main() {
 	app.POST("/register", handler.RegisterPOST)
 	//TODO: add authed middleware here
 	app.POST("/rooms", handler.CreateRoom)
+	//TODO: add authed middleware here as well
+	app.POST("/rooms/:token", handler.JoinRoom)
+	app.GET("/rooms/:token", handler.RoomMessages)
 	app.GET("/ws", handler.WebsocketsHander)
 
 	secret := os.Getenv("SECRET")

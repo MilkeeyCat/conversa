@@ -10,7 +10,8 @@ import (
 var Db *sql.DB
 
 func InitDB() error {
-	db, err := sql.Open("libsql", "file:///tmp/test.db")
+    db, err := sql.Open("libsql", "file:test.db")
+	//db, err := sql.Open("libsql", "file:///tmp/test.db")
 	if err != nil {
 		return err
 	}
@@ -29,7 +30,8 @@ func InitDB() error {
 	_, err = db.Exec(`
 	    CREATE TABLE IF NOT EXISTS rooms (
 	        id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            token TEXT NOT NULL
 	    )`)
 	if err != nil {
 		return err

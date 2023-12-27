@@ -32,7 +32,7 @@ templ Authed(messages []database.MessageWithUser, userId int) {
 					hx-on::ws-after-message="messages.scrollToLastMessage()"
 					ws-connect="/ws"
 					ws-send
-					class="p-10 bg-[green]"
+					class="p-10 bg-[green] mt-auto"
 				>
 					<input id="input" name="message" class="w-full bg-primary-1/50"/>
 				</form>
