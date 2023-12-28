@@ -61,3 +61,25 @@ func AddUserInRoom(token string, userId int) error {
 
 	return nil
 }
+
+func UserRooms(userId int) ([]Room, error) {
+	rooms := []Room{}
+
+	rows, err := Db.Query("SELECT rooms.id, rooms.name, rooms.token FROM rooms INNER JOIN rooms_users ON rooms.id = rooms_users.room_id and rooms_users.user_id = ?", userId)
+	if err != nil {
+		return rooms, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		room := Room{}
+
+		if err := rows.Scan(&room.Id, &room.Name, &room.Token); err != nil {
+			return rooms, err
+		}
+
+		rooms = append(rooms, room)
+	}
+
+	return rooms, nil
+}

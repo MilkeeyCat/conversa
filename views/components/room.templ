@@ -1,0 +1,7 @@
+package components
+
+import "github.com/MilkeeyCat/conversa/internal/database"
+
+templ Room(room database.Room) {
+	<p>{ room.Name } - { room.Token }</p>
+}

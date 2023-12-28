@@ -30,7 +30,7 @@ func GetRoomMessagesInRoom(roomId int) ([]MessageWithUser, error) {
 
 	rows, err := Db.Query("SELECT id, user_id, message, created_at FROM messages WHERE room_id = ?", roomId)
 	if err != nil {
-		return []MessageWithUser{}, err
+		return messages, err
 	}
 	defer rows.Close()
 
@@ -38,12 +38,12 @@ func GetRoomMessagesInRoom(roomId int) ([]MessageWithUser, error) {
 		msg := Message{}
 
 		if err := rows.Scan(&msg.Id, &msg.UserId, &msg.Message, &msg.CreatedAt); err != nil {
-			return []MessageWithUser{}, err
+			return messages, err
 		}
 
 		usr, err := FindUserById(msg.UserId)
 		if err != nil {
-			return []MessageWithUser{}, err
+			return messages, err
 		}
 
 		messages = append(messages, MessageWithUser{

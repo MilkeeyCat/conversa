@@ -6,7 +6,7 @@ import (
 	"github.com/MilkeeyCat/conversa/views/components"
 )
 
-templ Authed(messages []database.MessageWithUser, userId int) {
+templ Authed(rooms []database.Room, messages []database.MessageWithUser, userId int) {
 	@layouts.Base() {
 		<div class="flex h-full">
 			<div class="bg-[red] w-1/5">
@@ -20,6 +20,9 @@ templ Authed(messages []database.MessageWithUser, userId int) {
 					<button class="bg-[green]" type="button" hx-on:click="sidebar.toggleCreateRoomForm()">Cancel</button>
 				</form>
 				<button class="bg-[orange]" id="createRoomButton" hx-on:click="sidebar.toggleCreateRoomForm()">Create a new room</button>
+				for _, room := range rooms {
+					@components.Room(room)
+				}
 			</div>
 			<div class="bg-[blue] w-full lg:w-2/5 mx-auto flex flex-col min-h-full">
 				<div id="messages" class="overflow-y-auto">

@@ -18,7 +18,13 @@ func Index(c echo.Context) error {
 			return err
 		}
 
-		return render(c, pages.Authed(messages, data.Id))
+		rooms, err := database.UserRooms(data.Id)
+		if err != nil {
+			c.Logger().Error(err)
+			return err
+		}
+
+		return render(c, pages.Authed(rooms, messages, data.Id))
 	}
 
 	return render(c, pages.Guest())
