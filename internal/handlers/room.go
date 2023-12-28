@@ -55,11 +55,13 @@ func RoomMessages(c echo.Context) error {
 
 	room, err := database.FindRoomByToken(roomToken)
 	if err != nil {
+		c.Logger().Error(err)
 		return err
 	}
 
 	_, err = database.GetRoomMessagesInRoom(room.Id)
 	if err != nil {
+		c.Logger().Error(err)
 		return err
 	}
 

@@ -7,6 +7,7 @@ import (
 
 	"github.com/MilkeeyCat/conversa/internal/database"
 	handler "github.com/MilkeeyCat/conversa/internal/handlers"
+	"github.com/MilkeeyCat/conversa/internal/middlewares"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 	echojwt "github.com/labstack/echo-jwt/v4"
@@ -35,11 +36,9 @@ func main() {
 	app.POST("/login", handler.LoginPOST)
 	app.GET("/register", handler.Register)
 	app.POST("/register", handler.RegisterPOST)
-	//TODO: add authed middleware here
-	app.POST("/rooms", handler.CreateRoom)
-	//TODO: add authed middleware here as well
-	app.POST("/rooms/:token", handler.JoinRoom)
-	app.GET("/rooms/:token", handler.RoomMessages)
+	app.POST("/rooms", handler.CreateRoom, middlewares.AuthMiddleware)
+	app.POST("/rooms/:token", handler.JoinRoom, middlewares.AuthMiddleware)
+	app.GET("/rooms/:token", handler.RoomMessages, middlewares.AuthMiddleware)
 	app.GET("/ws", handler.WebsocketsHander)
 
 	secret := os.Getenv("SECRET")
