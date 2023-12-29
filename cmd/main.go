@@ -37,7 +37,7 @@ func main() {
 	app.GET("/register", handler.Register)
 	app.POST("/register", handler.RegisterPOST)
 	app.POST("/rooms", handler.CreateRoom, middlewares.AuthMiddleware)
-	app.POST("/rooms/:token", handler.JoinRoom, middlewares.AuthMiddleware)
+	app.GET("/rooms", handler.JoinRoom, middlewares.AuthMiddleware)
 	app.GET("/chat/:id", handler.Chat, middlewares.AuthMiddleware)
 	app.GET("/ws", handler.WebsocketsHander)
 

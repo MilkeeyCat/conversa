@@ -19,11 +19,11 @@ func messageClasses(ownMsg bool) string {
 }
 
 func messageContainerClasses(ownMsg bool) string {
-	classes := "bg-primary-1 rounded-[10px] p-2"
+	classes := "rounded-[10px] p-2"
 	if ownMsg {
-		classes += " rounded-br-none"
+		classes += " rounded-br-none bg-primary-1"
 	} else {
-		classes += " ml-3 rounded-bl-none"
+		classes += " ml-3 rounded-bl-none bg-primary-1/50"
 	}
 
 	return classes

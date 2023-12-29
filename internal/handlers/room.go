@@ -39,7 +39,7 @@ func CreateRoom(c echo.Context) error {
 }
 
 func JoinRoom(c echo.Context) error {
-	roomToken := c.Param("token")
+	roomToken := c.QueryParam("name")
 
 	userId := c.Get("user").(*jwt.Token).Claims.(*JwtCustomClaims).Id
 	err := database.AddUserInRoom(roomToken, userId)
