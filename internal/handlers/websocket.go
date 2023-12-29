@@ -66,11 +66,13 @@ func WebsocketsHander(c echo.Context) error {
 				c.Logger().Error(err)
 			}
 
-			type WsRequest struct {
+			type HTMXRequest struct {
+				Id      int    `json:"id"`
 				Message string `json:"message"`
+				//and htmx headers
 			}
 
-			var data WsRequest
+			var data HTMXRequest
 
 			err = json.Unmarshal(msg, &data)
 			if err != nil {
@@ -87,7 +89,7 @@ func WebsocketsHander(c echo.Context) error {
 				c.Logger().Error(err)
 			}
 
-			err = database.CreateMessage(claims.Id, data.Message, -1)
+			err = database.CreateMessage(claims.Id, data.Message, data.Id)
 			if err != nil {
 				c.Logger().Error(err)
 			}

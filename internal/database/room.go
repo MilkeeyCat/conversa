@@ -1,6 +1,9 @@
 package database
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+)
 
 type Room struct {
 	Id    int    `json:"id"`
@@ -82,4 +85,23 @@ func UserRooms(userId int) ([]Room, error) {
 	}
 
 	return rooms, nil
+}
+
+func IsUserInRoom(roomId, userId int) error {
+	if roomId == -1 {
+		return nil
+	}
+
+	var ok int
+
+	err := Db.QueryRow("SELECT COUNT(*) FROM rooms_users WHERE room_id = ? and user_id = ?", roomId, userId).Scan(&ok)
+	if err != nil {
+		return err
+	}
+
+	if ok == 0 {
+		return errors.New("not in da room")
+	}
+
+	return nil
 }

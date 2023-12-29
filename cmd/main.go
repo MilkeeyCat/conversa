@@ -38,7 +38,7 @@ func main() {
 	app.POST("/register", handler.RegisterPOST)
 	app.POST("/rooms", handler.CreateRoom, middlewares.AuthMiddleware)
 	app.POST("/rooms/:token", handler.JoinRoom, middlewares.AuthMiddleware)
-	app.GET("/rooms/:token", handler.RoomMessages, middlewares.AuthMiddleware)
+	app.GET("/chat/:id", handler.Chat, middlewares.AuthMiddleware)
 	app.GET("/ws", handler.WebsocketsHander)
 
 	secret := os.Getenv("SECRET")

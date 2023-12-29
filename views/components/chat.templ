@@ -1,0 +1,9 @@
+package components
+
+import "github.com/MilkeeyCat/conversa/internal/database"
+
+templ Chat(messages []database.MessageWithUser, userId int) {
+	for _, msg := range messages {
+		@Message(msg.Username, msg.Message, msg.UserId == userId)
+	}
+}

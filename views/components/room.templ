@@ -1,7 +1,22 @@
 package components
 
-import "github.com/MilkeeyCat/conversa/internal/database"
+import (
+	"strconv"
+
+	"github.com/MilkeeyCat/conversa/internal/database"
+)
+
+script setRoomId(id int) {
+    ws.setCurrentRoomId(id);
+    ws.setCurrentRoomId(id);
+}
 
 templ Room(room database.Room) {
-	<p>{ room.Name } - { room.Token }</p>
+	<p
+		hx-get={ "/chat/" + strconv.Itoa(room.Id) }
+		hx-target="#messages"
+		hx-on:click={ setRoomId(room.Id) }
+	>
+		{ room.Name } - { room.Token }
+	</p>
 }

@@ -10,25 +10,37 @@ templ Authed(rooms []database.Room, messages []database.MessageWithUser, userId 
 	@layouts.Base() {
 		<div class="flex h-full">
 			<div class="bg-[red] w-1/5">
-				<form
-					id="createRoomForm"
-					class="hidden"
-					hx-post="/rooms"
-				>
-					<input name="name" placeholder="Room name"/>
-					<button class="bg-[orange]" type="submit">Create</button>
-					<button class="bg-[green]" type="button" hx-on:click="sidebar.toggleCreateRoomForm()">Cancel</button>
-				</form>
-				<button class="bg-[orange]" id="createRoomButton" hx-on:click="sidebar.toggleCreateRoomForm()">Create a new room</button>
+				<div>
+					<form
+						id="createRoomForm"
+						class="hidden"
+						hx-post="/rooms"
+					>
+						<input name="name" placeholder="Room name"/>
+						<button class="bg-[orange]" type="submit">Create</button>
+						<button class="bg-[green]" type="button" hx-on:click="sidebar.toggleCreateRoomForm()">Cancel</button>
+					</form>
+					<button class="bg-[orange]" id="createRoomButton" hx-on:click="sidebar.toggleCreateRoomForm()">Create a new room</button>
+				</div>
+				<div>
+					<form
+						id="joinRoomForm"
+						class="hidden"
+						hx-get="/rooms"
+					>
+						<input name="name" placeholder="Room name"/>
+						<button class="bg-[orange]" type="submit">Join</button>
+						<button class="bg-[green]" type="button" hx-on:click="sidebar.toggleJoinRoomForm()">Cancel</button>
+					</form>
+					<button class="bg-[orange]" id="joinRoomButton" hx-on:click="sidebar.toggleJoinRoomForm()">Join an already existing room</button>
+				</div>
 				for _, room := range rooms {
 					@components.Room(room)
 				}
 			</div>
 			<div class="bg-[blue] w-full lg:w-2/5 mx-auto flex flex-col min-h-full">
 				<div id="messages" class="overflow-y-auto">
-					for _, msg := range messages {
-						@components.Message(msg.Username, msg.Message, msg.UserId == userId)
-					}
+					@components.Chat(messages, userId)
 				</div>
 				<form
 					hx-ext="ws"

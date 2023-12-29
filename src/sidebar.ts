@@ -7,3 +7,13 @@ export function toggleCreateRoomForm() {
         button.classList.toggle("hidden")
     }
 }
+
+export function toggleJoinRoomForm() {
+    const form = document.querySelector("#joinRoomForm")
+    const button = document.querySelector("#joinRoomButton")
+
+    if (form && button) {
+        form.classList.toggle("!block")
+        button.classList.toggle("hidden")
+    }
+}
